@@ -8,41 +8,34 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #f5f5f0;
       --sidebar-bg: #1e1e1e;
-      --sidebar-text: #ccc;
       --sidebar-hover: #2e2e2e;
       --sidebar-active: #3a3a3a;
-      --sidebar-active-border: #f0c040;
+      --accent: #f0c040;
+      --accent-hover: #e0b030;
       --editor-bg: #fefefe;
       --text: #222;
-      --muted: #888;
       --border: #ddd;
       --header-bg: #fff;
-      --btn-bg: #f0c040;
-      --btn-hover: #e0b030;
       --danger: #e05050;
-      --danger-hover: #c04040;
-      --shadow: 0 1px 4px rgba(0,0,0,0.08);
     }
 
     body {
       font-family: 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
-      background: var(--bg);
+      background: #f5f5f0;
       color: var(--text);
       height: 100vh;
       display: flex;
       overflow: hidden;
     }
 
-    /* Sidebar */
+    /* ── Sidebar ── */
     #sidebar {
       width: 240px;
       min-width: 200px;
       background: var(--sidebar-bg);
       display: flex;
       flex-direction: column;
-      color: var(--sidebar-text);
       flex-shrink: 0;
     }
 
@@ -55,29 +48,21 @@
       font-size: 17px;
       font-weight: 700;
       color: #fff;
-      letter-spacing: 0.5px;
-    }
-
-    #sidebar-header span {
-      font-size: 11px;
-      color: #666;
     }
 
     #new-note-btn {
       margin: 12px;
       padding: 9px 12px;
-      background: var(--btn-bg);
+      background: var(--accent);
       color: #111;
       border: none;
       border-radius: 6px;
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.15s;
-      text-align: center;
     }
 
-    #new-note-btn:hover { background: var(--btn-hover); }
+    #new-note-btn:hover { background: var(--accent-hover); }
 
     #search-box {
       margin: 0 12px 10px;
@@ -101,14 +86,12 @@
     }
 
     #note-list::-webkit-scrollbar { width: 4px; }
-    #note-list::-webkit-scrollbar-track { background: transparent; }
     #note-list::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
 
     .note-item {
       padding: 10px 16px;
       cursor: pointer;
       border-left: 3px solid transparent;
-      transition: background 0.1s;
       display: flex;
       flex-direction: column;
       gap: 3px;
@@ -118,7 +101,7 @@
 
     .note-item.active {
       background: var(--sidebar-active);
-      border-left-color: var(--sidebar-active-border);
+      border-left-color: var(--accent);
     }
 
     .note-item-title {
@@ -138,10 +121,7 @@
       text-overflow: ellipsis;
     }
 
-    .note-item-date {
-      font-size: 10px;
-      color: #555;
-    }
+    .note-item-date { font-size: 10px; color: #555; }
 
     #note-count {
       padding: 10px 16px;
@@ -150,13 +130,22 @@
       border-top: 1px solid #2a2a2a;
     }
 
-    /* Main Editor */
+    /* ── Main ── */
     #main {
       flex: 1;
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
+
+    #editor-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #editor-wrapper.hidden { display: none; }
 
     #editor-header {
       background: var(--header-bg);
@@ -165,8 +154,8 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      box-shadow: var(--shadow);
       flex-shrink: 0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
 
     #note-title-input {
@@ -181,51 +170,34 @@
 
     #note-title-input::placeholder { color: #bbb; }
 
-    .header-actions {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
+    .header-actions { display: flex; gap: 8px; align-items: center; }
 
     .header-btn {
       padding: 6px 14px;
       border: none;
       border-radius: 5px;
       font-size: 13px;
-      cursor: pointer;
-      transition: background 0.15s;
       font-weight: 500;
+      cursor: pointer;
     }
 
-    #save-btn {
-      background: var(--btn-bg);
-      color: #111;
-    }
-
-    #save-btn:hover { background: var(--btn-hover); }
-
-    #delete-btn {
-      background: #f5f5f5;
-      color: var(--danger);
-      border: 1px solid #e8e8e8;
-    }
-
+    #save-btn { background: var(--accent); color: #111; }
+    #save-btn:hover { background: var(--accent-hover); }
+    #delete-btn { background: #f5f5f5; color: var(--danger); border: 1px solid #e8e8e8; }
     #delete-btn:hover { background: #fee; }
 
-    #saved-indicator {
-      font-size: 12px;
-      color: #aaa;
-      transition: opacity 0.3s;
-    }
+    #saved-indicator { font-size: 12px; color: #aaa; }
 
+    /* ── Toolbar ── */
     #toolbar {
       background: var(--header-bg);
       border-bottom: 1px solid var(--border);
       padding: 6px 16px;
       display: flex;
-      gap: 4px;
+      gap: 2px;
       align-items: center;
       flex-shrink: 0;
+      flex-wrap: wrap;
     }
 
     .toolbar-btn {
@@ -236,15 +208,13 @@
       cursor: pointer;
       font-size: 13px;
       color: #555;
-      transition: all 0.1s;
       min-width: 28px;
       text-align: center;
+      user-select: none;
     }
 
-    .toolbar-btn:hover {
-      background: #f0f0f0;
-      border-color: var(--border);
-    }
+    .toolbar-btn:hover { background: #f0f0f0; border-color: var(--border); }
+    .toolbar-btn.active { background: #e8e8e8; border-color: #ccc; }
 
     .toolbar-sep {
       width: 1px;
@@ -253,9 +223,10 @@
       margin: 0 4px;
     }
 
+    /* ── Editor ── */
     #editor-area {
       flex: 1;
-      padding: 24px 32px;
+      padding: 28px 36px;
       overflow-y: auto;
       background: var(--editor-bg);
     }
@@ -268,14 +239,25 @@
       min-height: 100%;
       border: none;
       outline: none;
-      resize: none;
       font-size: 15px;
-      line-height: 1.75;
+      line-height: 1.8;
       color: var(--text);
       background: transparent;
       font-family: 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
     }
 
+    #note-content h1 { font-size: 22px; font-weight: 700; margin: 8px 0 4px; }
+    #note-content h2 { font-size: 18px; font-weight: 700; margin: 8px 0 4px; }
+    #note-content h3 { font-size: 15px; font-weight: 700; margin: 6px 0 2px; }
+    #note-content ul, #note-content ol { padding-left: 22px; margin: 4px 0; }
+    #note-content li { margin: 2px 0; }
+    #note-content b, #note-content strong { font-weight: 700; }
+    #note-content i, #note-content em { font-style: italic; }
+    #note-content u { text-decoration: underline; }
+    #note-content s { text-decoration: line-through; }
+    #note-content p { margin: 0; }
+
+    /* ── Status bar ── */
     #status-bar {
       background: #fafafa;
       border-top: 1px solid var(--border);
@@ -287,6 +269,7 @@
       flex-shrink: 0;
     }
 
+    /* ── Empty state ── */
     #empty-state {
       flex: 1;
       display: flex;
@@ -298,17 +281,14 @@
       gap: 12px;
     }
 
-    #empty-state svg {
-      opacity: 0.3;
-    }
+    #empty-state.hidden { display: none; }
 
-    #empty-state p {
-      font-size: 14px;
-    }
+    #empty-state svg { opacity: 0.3; }
+    #empty-state p { font-size: 14px; }
 
     #empty-state button {
       padding: 8px 20px;
-      background: var(--btn-bg);
+      background: var(--accent);
       color: #111;
       border: none;
       border-radius: 6px;
@@ -317,9 +297,9 @@
       cursor: pointer;
     }
 
-    #empty-state button:hover { background: var(--btn-hover); }
+    #empty-state button:hover { background: var(--accent-hover); }
 
-    /* Toast */
+    /* ── Toast ── */
     #toast {
       position: fixed;
       bottom: 24px;
@@ -336,12 +316,9 @@
       z-index: 1000;
     }
 
-    #toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    #toast.show { opacity: 1; transform: translateY(0); }
 
-    /* Modal */
+    /* ── Modal ── */
     #modal-overlay {
       display: none;
       position: fixed;
@@ -362,22 +339,10 @@
       box-shadow: 0 8px 32px rgba(0,0,0,0.2);
     }
 
-    #modal h3 {
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
+    #modal h3 { font-size: 16px; margin-bottom: 10px; }
+    #modal p { font-size: 13px; color: #666; margin-bottom: 20px; }
 
-    #modal p {
-      font-size: 13px;
-      color: #666;
-      margin-bottom: 20px;
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-    }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
 
     .modal-btn {
       padding: 8px 18px;
@@ -391,7 +356,7 @@
     #modal-cancel { background: #f0f0f0; color: #444; }
     #modal-cancel:hover { background: #e8e8e8; }
     #modal-confirm { background: var(--danger); color: #fff; }
-    #modal-confirm:hover { background: var(--danger-hover); }
+    #modal-confirm:hover { background: #c04040; }
 
     @media (max-width: 600px) {
       #sidebar { width: 180px; }
@@ -412,7 +377,7 @@
 </div>
 
 <div id="main">
-  <div id="editor-wrapper" style="display:none; flex:1; flex-direction:column; overflow:hidden; display:none;">
+  <div id="editor-wrapper" class="hidden">
     <div id="editor-header">
       <input id="note-title-input" type="text" placeholder="제목 없음" maxlength="100">
       <div class="header-actions">
@@ -421,26 +386,32 @@
         <button class="header-btn" id="delete-btn">삭제</button>
       </div>
     </div>
+
     <div id="toolbar">
-      <button class="toolbar-btn" onclick="execCmd('bold')" title="굵게"><b>B</b></button>
-      <button class="toolbar-btn" onclick="execCmd('italic')" title="기울임"><i>I</i></button>
-      <button class="toolbar-btn" onclick="execCmd('underline')" title="밑줄"><u>U</u></button>
-      <button class="toolbar-btn" onclick="execCmd('strikeThrough')" title="취소선"><s>S</s></button>
+      <button class="toolbar-btn" data-cmd="bold" title="굵게 (Ctrl+B)" onmousedown="event.preventDefault(); execCmd('bold')"><b>B</b></button>
+      <button class="toolbar-btn" data-cmd="italic" title="기울임 (Ctrl+I)" onmousedown="event.preventDefault(); execCmd('italic')"><i>I</i></button>
+      <button class="toolbar-btn" data-cmd="underline" title="밑줄 (Ctrl+U)" onmousedown="event.preventDefault(); execCmd('underline')"><u>U</u></button>
+      <button class="toolbar-btn" data-cmd="strikeThrough" title="취소선" onmousedown="event.preventDefault(); execCmd('strikeThrough')"><s>S</s></button>
       <div class="toolbar-sep"></div>
-      <button class="toolbar-btn" onclick="insertHeading()" title="제목">H</button>
-      <button class="toolbar-btn" onclick="execCmd('insertUnorderedList')" title="목록">≡</button>
-      <button class="toolbar-btn" onclick="execCmd('insertOrderedList')" title="번호 목록">1.</button>
+      <button class="toolbar-btn" title="제목 (H3)" onmousedown="event.preventDefault(); execFormat('h3')">H3</button>
+      <button class="toolbar-btn" title="소제목 (H2)" onmousedown="event.preventDefault(); execFormat('h2')">H2</button>
+      <button class="toolbar-btn" title="본문으로" onmousedown="event.preventDefault(); execFormat('p')">P</button>
       <div class="toolbar-sep"></div>
-      <button class="toolbar-btn" onclick="execCmd('justifyLeft')" title="왼쪽 정렬">◀</button>
-      <button class="toolbar-btn" onclick="execCmd('justifyCenter')" title="가운데 정렬">◆</button>
-      <button class="toolbar-btn" onclick="execCmd('justifyRight')" title="오른쪽 정렬">▶</button>
+      <button class="toolbar-btn" title="글머리 목록" onmousedown="event.preventDefault(); execCmd('insertUnorderedList')">•≡</button>
+      <button class="toolbar-btn" title="번호 목록" onmousedown="event.preventDefault(); execCmd('insertOrderedList')">1.</button>
       <div class="toolbar-sep"></div>
-      <button class="toolbar-btn" onclick="execCmd('undo')" title="실행 취소">↩</button>
-      <button class="toolbar-btn" onclick="execCmd('redo')" title="다시 실행">↪</button>
+      <button class="toolbar-btn" title="왼쪽 정렬" onmousedown="event.preventDefault(); execCmd('justifyLeft')">◀</button>
+      <button class="toolbar-btn" title="가운데 정렬" onmousedown="event.preventDefault(); execCmd('justifyCenter')">◆</button>
+      <button class="toolbar-btn" title="오른쪽 정렬" onmousedown="event.preventDefault(); execCmd('justifyRight')">▶</button>
+      <div class="toolbar-sep"></div>
+      <button class="toolbar-btn" title="실행 취소 (Ctrl+Z)" onmousedown="event.preventDefault(); execCmd('undo')">↩</button>
+      <button class="toolbar-btn" title="다시 실행 (Ctrl+Y)" onmousedown="event.preventDefault(); execCmd('redo')">↪</button>
     </div>
+
     <div id="editor-area">
       <div id="note-content" contenteditable="true" spellcheck="false"></div>
     </div>
+
     <div id="status-bar">
       <span id="char-count">0자</span>
       <span id="word-count">0단어</span>
@@ -481,18 +452,20 @@
   let saveTimer = null;
   let searchQuery = '';
 
-  const noteList = document.getElementById('note-list');
-  const noteCount = document.getElementById('note-count');
-  const editorWrapper = document.getElementById('editor-wrapper');
-  const emptyState = document.getElementById('empty-state');
-  const titleInput = document.getElementById('note-title-input');
-  const contentEl = document.getElementById('note-content');
-  const savedIndicator = document.getElementById('saved-indicator');
-  const charCount = document.getElementById('char-count');
-  const wordCount = document.getElementById('word-count');
-  const lastModified = document.getElementById('last-modified');
+  const $ = id => document.getElementById(id);
+  const noteListEl  = $('note-list');
+  const noteCountEl = $('note-count');
+  const editorWrapper  = $('editor-wrapper');
+  const emptyState     = $('empty-state');
+  const titleInput     = $('note-title-input');
+  const contentEl      = $('note-content');
+  const savedIndicator = $('saved-indicator');
+  const charCountEl    = $('char-count');
+  const wordCountEl    = $('word-count');
+  const lastModifiedEl = $('last-modified');
 
-  function save() {
+  /* ── Storage ── */
+  function persist() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
   }
 
@@ -500,49 +473,86 @@
     return Date.now().toString(36) + Math.random().toString(36).slice(2);
   }
 
+  /* ── Date ── */
   function formatDate(ts) {
-    const d = new Date(ts);
-    const now = new Date();
-    const diff = now - d;
-    if (diff < 60000) return '방금 전';
-    if (diff < 3600000) return Math.floor(diff / 60000) + '분 전';
+    const diff = Date.now() - ts;
+    if (diff < 60000)    return '방금 전';
+    if (diff < 3600000)  return Math.floor(diff / 60000) + '분 전';
     if (diff < 86400000) return Math.floor(diff / 3600000) + '시간 전';
     if (diff < 604800000) return Math.floor(diff / 86400000) + '일 전';
-    return d.toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' });
+    return new Date(ts).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' });
   }
 
+  /* ── Helpers ── */
+  function escapeHtml(str) {
+    return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function stripHtml(html) {
+    return (html || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+
+  function showToast(msg) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+
+  /* ── UI toggle ── */
+  function showEditor(show) {
+    editorWrapper.classList.toggle('hidden', !show);
+    emptyState.classList.toggle('hidden', show);
+  }
+
+  /* ── Status bar ── */
+  function updateStatus() {
+    const plain = contentEl.innerText.replace(/\n/g, '') || '';
+    charCountEl.textContent = plain.length + '자';
+    wordCountEl.textContent = (plain.trim() ? plain.trim().split(/\s+/).length : 0) + '단어';
+    const note = notes.find(n => n.id === activeId);
+    if (note) lastModifiedEl.textContent = '수정: ' + new Date(note.updatedAt).toLocaleString('ko-KR');
+  }
+
+  /* ── Toolbar state ── */
+  function updateToolbarState() {
+    document.querySelectorAll('.toolbar-btn[data-cmd]').forEach(btn => {
+      try {
+        btn.classList.toggle('active', document.queryCommandState(btn.dataset.cmd));
+      } catch(e) {}
+    });
+  }
+
+  /* ── List render ── */
   function renderList() {
     const q = searchQuery.toLowerCase();
-    const filtered = notes.filter(n =>
-      n.title.toLowerCase().includes(q) || n.content.toLowerCase().includes(q)
-    );
-    filtered.sort((a, b) => b.updatedAt - a.updatedAt);
+    const filtered = notes
+      .filter(n => {
+        if (!q) return true;
+        return n.title.toLowerCase().includes(q) || stripHtml(n.content).toLowerCase().includes(q);
+      })
+      .sort((a, b) => b.updatedAt - a.updatedAt);
 
-    noteList.innerHTML = '';
+    noteListEl.innerHTML = '';
     filtered.forEach(n => {
       const item = document.createElement('div');
       item.className = 'note-item' + (n.id === activeId ? ' active' : '');
-      item.dataset.id = n.id;
-
-      const plain = n.content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+      const preview = stripHtml(n.content).slice(0, 60);
       item.innerHTML = `
         <div class="note-item-title">${escapeHtml(n.title) || '제목 없음'}</div>
-        <div class="note-item-preview">${escapeHtml(plain.slice(0, 60)) || '내용 없음'}</div>
+        <div class="note-item-preview">${escapeHtml(preview) || '내용 없음'}</div>
         <div class="note-item-date">${formatDate(n.updatedAt)}</div>
       `;
       item.addEventListener('click', () => openNote(n.id));
-      noteList.appendChild(item);
+      noteListEl.appendChild(item);
     });
 
-    noteCount.textContent = `메모 ${filtered.length}개${q ? ' (검색됨)' : ''}`;
+    noteCountEl.textContent = `메모 ${filtered.length}개${q ? ' (검색됨)' : ''}`;
   }
 
-  function escapeHtml(str) {
-    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
-
+  /* ── Open / Save / Create / Delete ── */
   function openNote(id) {
-    if (activeId && activeId !== id) saveCurrentNote();
+    if (activeId && activeId !== id) saveCurrentNote(false);
     activeId = id;
     const note = notes.find(n => n.id === id);
     if (!note) return;
@@ -552,44 +562,24 @@
     showEditor(true);
     renderList();
     updateStatus();
-    savedIndicator.textContent = '저장됨';
-    savedIndicator.style.color = '#aaa';
+    markSaved();
     contentEl.focus();
   }
 
-  function showEditor(show) {
-    editorWrapper.style.display = show ? 'flex' : 'none';
-    editorWrapper.style.flexDirection = 'column';
-    editorWrapper.style.overflow = 'hidden';
-    editorWrapper.style.flex = '1';
-    emptyState.style.display = show ? 'none' : 'flex';
-  }
-
-  function createNote() {
-    if (activeId) saveCurrentNote();
-    const note = {
-      id: generateId(),
-      title: '',
-      content: '',
-      createdAt: Date.now(),
-      updatedAt: Date.now()
-    };
-    notes.unshift(note);
-    save();
-    openNote(note.id);
-    titleInput.focus();
-    titleInput.select();
-  }
-
-  function saveCurrentNote() {
+  function saveCurrentNote(showLabel = true) {
     if (!activeId) return;
     const note = notes.find(n => n.id === activeId);
     if (!note) return;
     note.title = titleInput.value.trim();
     note.content = contentEl.innerHTML;
     note.updatedAt = Date.now();
-    save();
+    persist();
     renderList();
+    updateStatus();
+    if (showLabel) markSaved();
+  }
+
+  function markSaved() {
     savedIndicator.textContent = '저장됨';
     savedIndicator.style.color = '#aaa';
   }
@@ -598,88 +588,89 @@
     savedIndicator.textContent = '저장 중...';
     savedIndicator.style.color = '#f0c040';
     clearTimeout(saveTimer);
-    saveTimer = setTimeout(saveCurrentNote, 800);
+    saveTimer = setTimeout(() => saveCurrentNote(true), 800);
   }
 
-  function updateStatus() {
-    const plain = contentEl.innerText || '';
-    const chars = plain.length;
-    const words = plain.trim() ? plain.trim().split(/\s+/).length : 0;
-    charCount.textContent = chars + '자';
-    wordCount.textContent = words + '단어';
-    const note = notes.find(n => n.id === activeId);
-    if (note) lastModified.textContent = '수정: ' + new Date(note.updatedAt).toLocaleString('ko-KR');
+  function createNote() {
+    if (activeId) saveCurrentNote(false);
+    const note = {
+      id: generateId(),
+      title: '',
+      content: '',
+      createdAt: Date.now(),
+      updatedAt: Date.now()
+    };
+    notes.unshift(note);
+    persist();
+    openNote(note.id);
+    titleInput.focus();
   }
 
   function deleteCurrentNote() {
     if (!activeId) return;
-    document.getElementById('modal-overlay').classList.add('show');
+    $('modal-overlay').classList.add('show');
   }
 
+  /* ── Toolbar commands ── */
   function execCmd(cmd) {
     document.execCommand(cmd, false, null);
-    contentEl.focus();
+    scheduleSave();
+    updateToolbarState();
+  }
+
+  function execFormat(tag) {
+    document.execCommand('formatBlock', false, tag);
     scheduleSave();
   }
 
-  function insertHeading() {
-    document.execCommand('formatBlock', false, 'h3');
-    contentEl.focus();
-    scheduleSave();
-  }
+  /* ── Events ── */
+  $('new-note-btn').addEventListener('click', createNote);
 
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2000);
-  }
-
-  // Events
-  document.getElementById('new-note-btn').addEventListener('click', createNote);
-
-  document.getElementById('save-btn').addEventListener('click', () => {
-    saveCurrentNote();
+  $('save-btn').addEventListener('click', () => {
+    saveCurrentNote(true);
     showToast('저장되었습니다');
   });
 
-  document.getElementById('delete-btn').addEventListener('click', deleteCurrentNote);
+  $('delete-btn').addEventListener('click', deleteCurrentNote);
 
-  document.getElementById('modal-cancel').addEventListener('click', () => {
-    document.getElementById('modal-overlay').classList.remove('show');
+  $('modal-cancel').addEventListener('click', () => {
+    $('modal-overlay').classList.remove('show');
   });
 
-  document.getElementById('modal-confirm').addEventListener('click', () => {
-    document.getElementById('modal-overlay').classList.remove('show');
+  $('modal-confirm').addEventListener('click', () => {
+    $('modal-overlay').classList.remove('show');
     notes = notes.filter(n => n.id !== activeId);
     activeId = null;
-    save();
+    persist();
     showEditor(false);
     renderList();
     showToast('삭제되었습니다');
   });
 
   titleInput.addEventListener('input', scheduleSave);
+
   contentEl.addEventListener('input', () => {
     scheduleSave();
     updateStatus();
   });
 
-  document.getElementById('search-box').addEventListener('input', e => {
+  contentEl.addEventListener('keyup', updateToolbarState);
+  contentEl.addEventListener('mouseup', updateToolbarState);
+
+  $('search-box').addEventListener('input', e => {
     searchQuery = e.target.value;
     renderList();
   });
 
-  // Ctrl+S
   document.addEventListener('keydown', e => {
     if ((e.ctrlKey || e.metaKey) && e.key === 's') {
       e.preventDefault();
-      saveCurrentNote();
+      saveCurrentNote(true);
       showToast('저장되었습니다');
     }
   });
 
-  // Init
+  /* ── Init ── */
   showEditor(false);
   renderList();
   if (notes.length > 0) {
